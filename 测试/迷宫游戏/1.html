@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>走一走：走出迷宫</title>
+    <style>
+        :root {
+            --bg-color: #e0e0e0;
+            --tile-light: #bcbcbc;
+            --tile-dark: #808080;
+            --tile-deep: #555555;
+            --text-color: #333;
+            --accent: #ff4757;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+            user-select: none;
+        }
+
+        h2 { color: var(--text-color); margin-bottom: 10px; }
+
+        /* 顶部序列展示 */
+        .sequence-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.3);
+            padding: 10px 30px;
+            border-radius: 15px;
+            align-items: center;
+        }
+        .seq-item { text-align: center; }
+        .seq-item svg { width: 40px; height: 40px; }
+        .seq-arrow { font-size: 20px; font-weight: bold; color: #666; }
+
+        /* 游戏区域 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(7, 60px);
+            grid-template-rows: repeat(8, 60px);
+            gap: 2px;
+            background: #999;
+            border: 4px solid #999;
+        }
+
+        .tile {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.1s;
+        }
+
+        .tile:active { transform: scale(0.95); }
+
+        .tile svg { width: 45px; height: 45px; pointer-events: none; }
+
+        /* 各种背景色 */
+        .bg-0 { background-color: #ffffff; }
+        .bg-1 { background-color: var(--tile-light); }
+        .bg-2 { background-color: var(--tile-dark); }
+        .bg-3 { background-color: var(--tile-deep); }
+
+        /* 状态样式 */
+        .tile.active { outline: 4px solid var(--accent); z-index: 10; }
+        .tile.valid-hint { filter: brightness(1.2); }
+        .tile.disabled { cursor: not-allowed; }
+
+        /* 已走路径痕迹 */
+        .tile.visited { position: relative; }
+        .tile.visited::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            background: rgba(255, 71, 87, 0.7);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .tile.visited-start::after { background: rgba(46, 204, 113, 0.7); }
+        .tile.visited-end::after {
+            background: rgba(241, 196, 15, 0.9);
+            width: 20px;
+            height: 20px;
+        }
+
+        /* 路径连线 */
+        .grid {
+            position: relative;
+        }
+        .path-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .path-svg line {
+            stroke: rgba(255, 71, 87, 0.8);
+            stroke-width: 6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .label { font-weight: bold; font-size: 14px; text-align: center; line-height: 1.2; }
+
+        #message {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            height: 24px;
+            color: var(--accent);
+        }
+
+        .btn {
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: var(--tile-deep);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover { background: #333; }
+
+        /* 整体布局：游戏主体居中 */
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 规则悬浮按钮 */
+        .rules-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 100;
+            line-height: 36px;
+            text-align: center;
+        }
+        .rules-btn:hover { background: #e0354a; }
+
+        /* 规则弹出面板 */
+        .rules {
+            display: none;
+            position: fixed;
+            top: 64px;
+            right: 20px;
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(4px);
+            padding: 18px 20px;
+            border-radius: 14px;
+            width: 220px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.9);
+            z-index: 99;
+        }
+        .rules.open { display: block; }
+        .rules h3 {
+            margin: 0 0 14px 0;
+            font-size: 15px;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .rules h3::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        .rules ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .rules li {
+            font-size: 13px;
+            color: #555;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.5;
+        }
+        .rules li::before {
+            content: attr(data-num);
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            background: var(--accent);
+            color: #fff;
+            border-radius: 50%;
+            font-size: 11px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>走一走：按照下面的顺序，你能走出迷宫吗！</h2>
+
+    <button class="rules-btn" onclick="toggleRules()">?</button>
+    <div class="rules" id="rulesPanel">
+        <h3>游戏规则</h3>
+        <ul>
+            <li data-num="1">从左侧"入口"进入，按顺序寻找：面 → 泪 → 见 → 眉 → 循环</li>
+            <li data-num="2">每次只能移动到上下左右相邻的格子</li>
+            <li data-num="3">必须按正确顺序经过图标才能前进</li>
+            <li data-num="4">走到右上角"出口"即获胜</li>
+            <li data-num="5">点击已走过的格子可退回该位置</li>
+        </ul>
+    </div>
+
+    <div class="game-container">
+        <div class="sequence-container" id="legend"></div>
+
+        <div class="grid" id="maze"></div>
+
+        <div id="message">点击"入口"开始游戏</div>
+        <div style="display:flex;gap:10px;margin-top:15px;">
+            <button class="btn" onclick="undoStep()">退一步</button>
+            <button class="btn" onclick="resetGame()">重置游戏</button>
+        </div>
+    </div>
+
+<script>
+    const icons = [
+        `<svg viewBox="0 0 100 100"><path d="M10,50 Q50,10 90,50 Q50,90 10,50 M35,50 A15,15 0 1,1 65,50 A15,15 0 1,1 35,50" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>`,
+        `<svg viewBox="0 0 100 100"><path d="M15,40 Q50,5 85,40 Q50,75 15,40 M40,40 A10,10 0 1,1 60,40 A10,10 0 1,1 40,40" fill="none" stroke="currentColor" stroke-width="4"/><path d="M30,70 Q35,60 40,70 T50,70 T70,70" fill="none" stroke="currentColor" stroke-width="3"/><path d="M35,75 L35,85 M50,75 L50,90 M65,75 L65,85" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>`,
+        `<svg viewBox="0 0 100 100"><path d="M40,10 Q70,50 40,90 M60,10 Q30,50 60,90" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><circle cx="50" cy="45" r="8" fill="currentColor"/><path d="M45,70 Q50,85 55,70" fill="none" stroke="currentColor" stroke-width="4"/></svg>`,
+        `<svg viewBox="0 0 100 100"><path d="M20,60 Q50,30 80,60 Q50,90 20,60" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="50" cy="60" r="10" fill="none" stroke="currentColor" stroke-width="3"/><path d="M35,25 L30,15 M50,20 L50,10 M65,25 L70,15" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>`
+    ];
+
+    const names = ["面", "泪", "见", "眉"];
+
+    const mapData = [
+        [-3, 3, 1, 3, 2, 1, -3],
+        [-1, 0, 1, 3, 1, 3, -2],
+        [0, 2, 2, 1, 3, 1, 2],
+        [1, 0, 3, 0, 3, 0, 0],
+        [3, 3, 0, 3, 2, 1, 3],
+        [1, 0, 1, 3, 1, 2, 2],
+        [2, 1, 2, 3, 0, 3, 1],
+        [-3, 1, 0, 3, 2, 2, -3]
+    ];
+
+    const styleMap = [
+        [0, 2, 3, 3, 2, 2, 0],
+        [0, 3, 2, 1, 3, 2, 0],
+        [2, 2, 1, 1, 1, 3, 2],
+        [2, 2, 3, 3, 2, 1, 2],
+        [1, 2, 1, 1, 2, 3, 3],
+        [2, 1, 1, 3, 1, 2, 2],
+        [1, 2, 2, 3, 1, 2, 0],
+        [0, 2, 2, 3, 1, 2, 0]
+    ];
+
+    let currentPos = null;
+    let nextIconIndex = 0;
+    let pathHistory = [];
+
+    function init() {
+        const legend = document.getElementById('legend');
+        names.forEach((name, i) => {
+            const div = document.createElement('div');
+            div.className = 'seq-item';
+            div.innerHTML = icons[i] + '<div class="label">' + name + '</div>';
+            legend.appendChild(div);
+            if(i < 3) {
+                const arrow = document.createElement('div');
+                arrow.className = 'seq-arrow';
+                arrow.innerText = '->';
+                legend.appendChild(arrow);
+            }
+        });
+        renderMaze();
+    }
+
+    function renderMaze() {
+        const mazeDiv = document.getElementById('maze');
+        mazeDiv.innerHTML = '';
+
+        for (let r = 0; r < 8; r++) {
+            for (let c = 0; c < 7; c++) {
+                const val = mapData[r][c];
+                if (val === -3) {
+                    const spacer = document.createElement('div');
+                    mazeDiv.appendChild(spacer);
+                    continue;
+                }
+
+                const tile = document.createElement('div');
+                tile.className = 'tile bg-' + styleMap[r][c];
+                tile.dataset.r = r;
+                tile.dataset.c = c;
+
+                if (val === -1) {
+                    tile.innerHTML = '<div class="label">入口<br>-></div>';
+                } else if (val === -2) {
+                    tile.innerHTML = '<div class="label">出口<br>^</div>';
+                } else {
+                    tile.innerHTML = icons[val];
+                    tile.style.color = (styleMap[r][c] === 3) ? '#fff' : '#333';
+                }
+
+                tile.onclick = function() { handleTileClick(r, c); };
+                mazeDiv.appendChild(tile);
+            }
+        }
+
+        // 添加 SVG 连线层（放在最后，作为覆盖层）
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.classList.add('path-svg');
+        svg.id = 'pathSvg';
+        // 设置 viewBox 匹配 grid 尺寸：7列 * 60 + 6个gap * 2 = 432, 8行 * 60 + 7个gap * 2 = 494
+        svg.setAttribute('viewBox', '0 0 432 494');
+        svg.setAttribute('preserveAspectRatio', 'none');
+        mazeDiv.appendChild(svg);
+    }
+
+    function handleTileClick(r, c) {
+        const val = mapData[r][c];
+        const msg = document.getElementById('message');
+
+        // 检查是否点击了已走过的路径（用于退回）
+        const visitedIndex = pathHistory.findIndex(function(p) { return p.r === r && p.c === c; });
+        if (visitedIndex !== -1 && visitedIndex < pathHistory.length - 1) {
+            // 退回到这个位置，从快照恢复 nextIconIndex
+            pathHistory = pathHistory.slice(0, visitedIndex + 1);
+            currentPos = {r: r, c: c};
+            nextIconIndex = pathHistory[visitedIndex].iconIdx;
+            updatePathVisuals();
+            highlightTile(r, c);
+            msg.innerText = '已退回，当前寻找"' + names[nextIconIndex] + '"';
+            msg.style.color = 'var(--text-color)';
+            return;
+        }
+
+        if (val === -1) {
+            resetState();
+            currentPos = {r: r, c: c};
+            pathHistory = [{r: r, c: c, iconIdx: 0}];
+            nextIconIndex = 0;
+            highlightTile(r, c);
+            updatePathVisuals();
+            msg.innerText = '已进入，请寻找"面"';
+            return;
+        }
+
+        if (!currentPos) {
+            msg.innerText = '请先点击入口!';
+            return;
+        }
+
+        const isAdjacent = Math.abs(currentPos.r - r) + Math.abs(currentPos.c - c) === 1;
+        if (!isAdjacent) {
+            msg.innerText = '只能移动到相邻的方块哦!';
+            return;
+        }
+
+        if (val === -2) {
+            // 至少完成一轮（触碰过全部4个图标），pathHistory 含入口+4格=至少5个节点
+            if (pathHistory.length < 5) {
+                msg.innerText = '还没找完一轮图标，不能出去哦！';
+                msg.style.color = 'red';
+                return;
+            }
+            pathHistory.push({r: r, c: c, iconIdx: nextIconIndex});
+            highlightTile(r, c);
+            updatePathVisuals();
+            msg.innerText = '恭喜你！成功走出迷宫！';
+            msg.style.color = 'green';
+            return;
+        }
+
+        if (val === nextIconIndex) {
+            nextIconIndex = (nextIconIndex + 1) % 4;
+            currentPos = {r: r, c: c};
+            pathHistory.push({r: r, c: c, iconIdx: nextIconIndex});
+            highlightTile(r, c);
+            updatePathVisuals();
+            msg.innerText = '正确！接下来找"' + names[nextIconIndex] + '"';
+            msg.style.color = 'var(--text-color)';
+        } else {
+            msg.innerText = '顺序不对！应该是"' + names[nextIconIndex] + '"';
+            msg.style.color = 'red';
+        }
+    }
+
+    function updatePathVisuals() {
+        document.querySelectorAll('.tile').forEach(function(t) {
+            t.classList.remove('visited', 'visited-start', 'visited-end');
+        });
+
+        // 清除旧的连线
+        const svg = document.getElementById('pathSvg');
+        svg.innerHTML = '';
+
+        if (pathHistory.length < 2) {
+            // 只有一个点或没有点，只显示点标记
+            pathHistory.forEach(function(pos, index) {
+                const tile = document.querySelector('.tile[data-r="' + pos.r + '"][data-c="' + pos.c + '"]');
+                if (tile) {
+                    tile.classList.add('visited');
+                    if (index === 0) tile.classList.add('visited-start');
+                }
+            });
+            return;
+        }
+
+        // 画路径点和连线
+        pathHistory.forEach(function(pos, index) {
+            const tile = document.querySelector('.tile[data-r="' + pos.r + '"][data-c="' + pos.c + '"]');
+            if (tile) {
+                tile.classList.add('visited');
+                if (index === 0) tile.classList.add('visited-start');
+                if (index === pathHistory.length - 1) tile.classList.add('visited-end');
+            }
+
+            // 画到下一个点的连线
+            if (index < pathHistory.length - 1) {
+                const nextPos = pathHistory[index + 1];
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+
+                // 计算格子中心坐标
+                // 每个格子 60px + gap 2px
+                // 中心点 = 格子索引 * 62 + 30
+                const x1 = pos.c * 62 + 30;
+                const y1 = pos.r * 62 + 30;
+                const x2 = nextPos.c * 62 + 30;
+                const y2 = nextPos.r * 62 + 30;
+
+                line.setAttribute('x1', x1);
+                line.setAttribute('y1', y1);
+                line.setAttribute('x2', x2);
+                line.setAttribute('y2', y2);
+
+                svg.appendChild(line);
+            }
+        });
+    }
+
+    function highlightTile(r, c) {
+        document.querySelectorAll('.tile').forEach(function(t) { t.classList.remove('active'); });
+        const target = document.querySelector('.tile[data-r="' + r + '"][data-c="' + c + '"]');
+        if (target) target.classList.add('active');
+    }
+
+    function resetState() {
+        currentPos = null;
+        nextIconIndex = 0;
+        pathHistory = [];
+        document.getElementById('message').style.color = 'var(--text-color)';
+    }
+
+    function resetGame() {
+        resetState();
+        renderMaze();
+        document.getElementById('message').innerText = '游戏已重置，点击"入口"开始';
+    }
+
+    function toggleRules() {
+        document.getElementById('rulesPanel').classList.toggle('open');
+    }
+
+    // 点击其他区域关闭规则面板
+    document.addEventListener('click', function(e) {
+        const panel = document.getElementById('rulesPanel');
+        if (!panel.contains(e.target) && !e.target.classList.contains('rules-btn')) {
+            panel.classList.remove('open');
+        }
+    });
+
+    // 退一步功能
+    function undoStep() {
+        if (pathHistory.length <= 1) {
+            // 只剩下入口，不能再退
+            if (pathHistory.length === 1) {
+                // 退回到初始状态（入口）
+                pathHistory = [];
+                currentPos = null;
+                nextIconIndex = 0;
+                document.querySelectorAll('.tile').forEach(function(t) {
+                    t.classList.remove('active', 'visited', 'visited-start', 'visited-end');
+                });
+                document.getElementById('message').innerText = '已退回到入口，请重新开始';
+                document.getElementById('message').style.color = 'var(--text-color)';
+            } else {
+                document.getElementById('message').innerText = '还没有开始移动，无法后退';
+            }
+            return;
+        }
+
+        // 移除最后一步
+        pathHistory.pop();
+
+        // 更新当前位置，从快照恢复 nextIconIndex
+        const lastPos = pathHistory[pathHistory.length - 1];
+        currentPos = {r: lastPos.r, c: lastPos.c};
+        nextIconIndex = lastPos.iconIdx;
+
+        // 更新显示
+        updatePathVisuals();
+        highlightTile(currentPos.r, currentPos.c);
+        document.getElementById('message').innerText = '已退回上一步，当前寻找"' + names[nextIconIndex] + '"';
+        document.getElementById('message').style.color = 'var(--text-color)';
+    }
+
+    init();
+</script>
+</body>
+</html>
