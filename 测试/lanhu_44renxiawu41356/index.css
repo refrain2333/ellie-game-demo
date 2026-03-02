@@ -18,6 +18,9 @@
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
+  /* 防止选中文本和图片 */
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 body {
