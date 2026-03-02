@@ -1,0 +1,155 @@
+:root {
+  --bg-color: #f0f2f5;
+  --panel-bg: rgba(255, 255, 255, 0.95);
+  --accent: #ff4757;
+  --text-color: #2f3542;
+  --cell-size: 90px;
+}
+
+/* 移动端适配：缩小框框比例 */
+@media (max-width: 480px) {
+  :root { --cell-size: 75px; }
+}
+
+@media (max-width: 360px) {
+  :root { --cell-size: 65px; }
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  font-family: -apple-system, system-ui, "Microsoft YaHei", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.header { text-align: center; margin-bottom: 25px; }
+.header h2 { margin: 0; font-size: 24px; color: var(--text-color); }
+.subtitle { font-size: 14px; color: #888; margin-top: 5px; }
+
+/* 规则标号样式 - 完美复刻 1.html */
+.rules-panel ul {
+  margin: 0; padding: 0; list-style: none;
+  display: flex; flex-direction: column; gap: 12px;
+}
+
+.rules-panel li {
+  font-size: 13px; color: #555;
+  display: flex; align-items: flex-start; gap: 10px; line-height: 1.5;
+}
+
+.rules-panel li::before {
+  content: attr(data-num);
+  flex-shrink: 0; width: 18px; height: 18px;
+  background: var(--accent); color: #fff; border-radius: 50%;
+  font-size: 11px; font-weight: bold;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 1px;
+}
+
+.symbol-legend {
+  display: flex; gap: 20px;
+  background: white; padding: 10px 25px;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  margin-bottom: 30px;
+}
+
+.legend-item img { width: 30px; height: 30px; object-fit: contain; }
+.legend-item span { font-size: 11px; color: #aaa; margin-top: 2px; }
+
+.game-container {
+  background: #ffffff; /* 改为纯白色，与浅灰蓝页面背景形成良好对比 */
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.board-wrapper {
+  width: calc(var(--cell-size) * 4 + 20px);
+  height: calc(var(--cell-size) * 4 + 20px);
+  /* 移除外层大边框背景图 */
+  background: transparent;
+  display: flex; justify-content: center; align-items: center;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(4, var(--cell-size));
+  grid-template-rows: repeat(4, var(--cell-size));
+  gap: 2px;
+  margin-top: -3px;
+}
+
+.grid-cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  /* 恢复内层小白框 */
+  background: url(./img/f41a080006e9cbd5b00a54fd407ad299.png) no-repeat center;
+  background-size: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.1s, opacity 0.2s;
+  /* 添加阴影让白框更明显 */
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.grid-cell:active {
+  transform: scale(0.92);
+}
+
+.grid-cell img {
+  width: 45%; /* 同步缩小符号，使其完美契合缩小的白框 */
+  height: 45%;
+  object-fit: contain;
+  pointer-events: none;
+  /* 移除偏移，让flexbox自然居中 */
+}
+
+.grid-cell.fixed {
+  opacity: 0.65;
+  pointer-events: none;
+  cursor: default;
+}
+
+.status-msg { margin-top: 25px; font-weight: bold; color: var(--accent); height: 20px; }
+.btn {
+  margin-top: 15px; padding: 10px 30px;
+  background: #2f3542; color: white; border: none;
+  border-radius: 6px; cursor: pointer;
+}
+
+/* 浮动面板 */
+.rules-btn {
+  position: fixed; top: 20px; right: 20px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--accent); color: white; border: none;
+  font-size: 18px; font-weight: bold; cursor: pointer; z-index: 100;
+}
+
+.rules-panel {
+  display: none; position: fixed; top: 70px; right: 20px; width: 260px;
+  background: var(--panel-bg); backdrop-filter: blur(10px);
+  padding: 20px; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  z-index: 99; border: 1px solid rgba(255,255,255,0.5);
+}
+.rules-panel.open { display: block; }
+.rules-panel h3 { margin: 0 0 15px 0; font-size: 16px; border-left: 4px solid var(--accent); padding-left: 10px; }

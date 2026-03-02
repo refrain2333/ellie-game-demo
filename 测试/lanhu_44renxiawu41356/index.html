@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>符号解谜：逻辑挑战</title>
+    <link rel="stylesheet" type="text/css" href="./index.css">
+</head>
+<body>
+    <!-- 规则按钮 -->
+    <button class="rules-btn" id="toggleRules">?</button>
+    <div class="rules-panel" id="rulesPanel">
+        <h3>游戏规则</h3>
+        <ul>
+            <li data-num="1">棋盘大小为 4x4。</li>
+            <li data-num="2">点击方格切换符号：工 → 匀 → 中 → 夫 → 清空。</li>
+            <li data-num="3">每行、每列必须包含这四个符号且不能重复。</li>
+            <li data-num="4">全部填满且符合“拉丁方阵”逻辑即通关！</li>
+        </ul>
+    </div>
+
+    <div class="page">
+        <div class="header">
+            <h2>逻辑符号填词</h2>
+            <p class="subtitle">让每一行和每一列的符号都不重复</p>
+        </div>
+
+        <!-- 符号图例 -->
+        <div class="symbol-legend">
+            <div class="legend-item"><img src="./img/11868dd7e029e0c84c43c42ee4a05a44.png"><span>工</span></div>
+            <div class="legend-item"><img src="./img/75751ed542189c0a097a4b36985c78f5.png"><span>匀</span></div>
+            <div class="legend-item"><img src="./img/99a786f070468cfc2ee2fe2d3b2749c8.png"><span>中</span></div>
+            <div class="legend-item"><img src="./img/02743ce3e1d7806aec6c18836c1edfb5.png"><span>夫</span></div>
+        </div>
+
+        <!-- 核心游戏区 -->
+        <div class="game-container">
+            <div class="board-wrapper">
+                <div id="game-grid" class="game-grid"></div>
+            </div>
+        </div>
+
+        <div id="status-msg" class="status-msg">点击方阵格开始游戏</div>
+
+        <div class="controls">
+            <button class="btn reset-btn" onclick="location.reload()">重置挑战</button>
+        </div>
+    </div>
+
+    <script src="./game.js"></script>
+    <script>
+        document.getElementById('toggleRules').onclick = function(e) {
+            e.stopPropagation();
+            document.getElementById('rulesPanel').classList.toggle('open');
+        };
+        document.addEventListener('click', function() {
+            document.getElementById('rulesPanel').classList.remove('open');
+        });
+        document.getElementById('rulesPanel').onclick = function(e) {
+            e.stopPropagation();
+        };
+    </script>
+</body>
+</html>
