@@ -20,30 +20,36 @@
     </div>
 
     <div class="page">
-        <div class="header">
-            <h2>逻辑符号填词</h2>
-            <p class="subtitle">让每一行和每一列的符号都不重复</p>
+        <!-- 左侧区域：标题+图例+状态+按钮 -->
+        <div class="left-panel">
+            <div class="header">
+                <h2>逻辑符号填词</h2>
+                <p class="subtitle">让每一行和每一列的符号都不重复</p>
+            </div>
+
+            <!-- 符号图例 -->
+            <div class="symbol-legend">
+                <div class="legend-item"><img src="./img/11868dd7e029e0c84c43c42ee4a05a44.png"><span>工</span></div>
+                <div class="legend-item"><img src="./img/75751ed542189c0a097a4b36985c78f5.png"><span>匀</span></div>
+                <div class="legend-item"><img src="./img/99a786f070468cfc2ee2fe2d3b2749c8.png"><span>中</span></div>
+                <div class="legend-item"><img src="./img/02743ce3e1d7806aec6c18836c1edfb5.png"><span>夫</span></div>
+            </div>
+
+            <div id="status-msg" class="status-msg">点击方阵格开始游戏</div>
+
+            <div class="controls">
+                <button class="btn reset-btn" onclick="location.reload()">重置挑战</button>
+            </div>
         </div>
 
-        <!-- 符号图例 -->
-        <div class="symbol-legend">
-            <div class="legend-item"><img src="./img/11868dd7e029e0c84c43c42ee4a05a44.png"><span>工</span></div>
-            <div class="legend-item"><img src="./img/75751ed542189c0a097a4b36985c78f5.png"><span>匀</span></div>
-            <div class="legend-item"><img src="./img/99a786f070468cfc2ee2fe2d3b2749c8.png"><span>中</span></div>
-            <div class="legend-item"><img src="./img/02743ce3e1d7806aec6c18836c1edfb5.png"><span>夫</span></div>
-        </div>
+        <!-- 测试用分隔符 -->
+        <div class="test-spacer"></div>
 
-        <!-- 核心游戏区 -->
+        <!-- 右侧区域：游戏区 -->
         <div class="game-container">
             <div class="board-wrapper">
                 <div id="game-grid" class="game-grid"></div>
             </div>
-        </div>
-
-        <div id="status-msg" class="status-msg">点击方阵格开始游戏</div>
-
-        <div class="controls">
-            <button class="btn reset-btn" onclick="location.reload()">重置挑战</button>
         </div>
     </div>
 

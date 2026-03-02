@@ -1,9 +1,15 @@
 :root {
-  --bg-color: #f0f2f5;
-  --panel-bg: rgba(255, 255, 255, 0.95);
-  --accent: #ff4757;
-  --text-color: #2f3542;
+  /* 儿歌配色 - 虫虫飞主题 */
+  --bg-color: #F5EED3;        /* 浅暖黄背景 */
+  --panel-bg: rgba(255, 255, 255, 0.92);
+  --accent: #ECC162;           /* 虫虫飞主题色 - 暖黄 */
+  --accent-dark: #D4A84B;     /* 主题色深色版 */
+  --text-color: #5C4A1F;      /* 深棕色文字 */
+  --text-light: #8B7355;      /* 浅棕色副文字 */
   --cell-size: 90px;
+  --game-bg: #FFFEF5;         /* 米白色游戏背景 */
+  --cell-bg: #FAF6E8;         /* 浅黄格子背景 */
+  --shadow-color: rgba(92, 74, 31, 0.15);
 }
 
 /* 移动端适配：缩小框框比例 */
@@ -13,6 +19,132 @@
 
 @media (max-width: 360px) {
   :root { --cell-size: 65px; }
+}
+
+/* 移动端横屏适配 */
+@media (max-width: 768px) and (orientation: landscape) {
+  .left-panel {
+    width: 40% !important;
+    min-width: 0;
+  }
+  .game-container {
+    width: 50% !important;
+    min-width: 0;
+  }
+  .page {
+    gap: 0 !important;
+  }
+  .test-spacer {
+    width: 80px !important;
+    background: transparent !important;
+    flex-shrink: 0;
+    display: block !important;
+  }
+}
+
+/* 横屏适配 */
+@media screen and (orientation: landscape) and (min-width: 500px), screen and (min-aspect-ratio: 13/9) {
+  :root {
+    --cell-size: 70px;
+  }
+
+  body {
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .page {
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: center;
+    gap: 120px;
+    max-width: 650px;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    padding: 2px 20px;
+    box-sizing: border-box;
+  }
+
+  .left-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: auto;
+    flex-shrink: 0;
+  }
+
+  .header {
+    margin-bottom: 0;
+    text-align: center;
+  }
+
+  .header h2 {
+    font-size: 16px;
+    margin: 0;
+  }
+
+  .subtitle {
+    display: none;
+  }
+
+  .symbol-legend {
+    margin-bottom: 0;
+    gap: 6px;
+    padding: 5px 10px;
+  }
+
+  .legend-item img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .legend-item span {
+    display: none;
+  }
+
+  .game-container {
+    padding: 10px;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .board-wrapper {
+    width: calc(var(--cell-size) * 4 + 10px);
+    height: calc(var(--cell-size) * 4 + 10px);
+  }
+
+  .status-msg {
+    display: block;
+    text-align: left;
+    font-size: 12px;
+    margin-top: 10px;
+  }
+
+  .controls {
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 8px 15px;
+    font-size: 14px;
+  }
+}
+
+/* 窄横屏 - 紧凑模式 */
+@media (orientation: landscape) and (max-height: 500px) {
+  :root { --cell-size: 65px; }
+  .page { gap: 20px; padding: 2px 4px; }
+  .left-panel { gap: 6px; }
+  .header h2 { font-size: 16px; }
+  .symbol-legend { padding: 5px 10px; gap: 6px; }
+  .game-container { padding: 8px; }
+  .btn { padding: 6px 12px; font-size: 12px; }
 }
 
 * {
@@ -39,12 +171,25 @@ body {
   align-items: center;
   padding: 30px 20px;
   width: 100%;
-  max-width: 500px;
+  max-width: 100%;
+}
+
+/* 测试分隔符 */
+.test-spacer {
+  width: 60px;
+  background: transparent;
+}
+
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .header { text-align: center; margin-bottom: 25px; }
-.header h2 { margin: 0; font-size: 24px; color: var(--text-color); }
-.subtitle { font-size: 14px; color: #888; margin-top: 5px; }
+.header h2 { margin: 0; font-size: 24px; color: var(--text-color); font-weight: 600; }
+.subtitle { font-size: 14px; color: var(--text-light); margin-top: 5px; }
 
 /* 规则标号样式 - 完美复刻 1.html */
 .rules-panel ul {
@@ -53,7 +198,7 @@ body {
 }
 
 .rules-panel li {
-  font-size: 13px; color: #555;
+  font-size: 13px; color: var(--text-color);
   display: flex; align-items: flex-start; gap: 10px; line-height: 1.5;
 }
 
@@ -78,10 +223,10 @@ body {
 .legend-item span { font-size: 11px; color: #aaa; margin-top: 2px; }
 
 .game-container {
-  background: #ffffff; /* 改为纯白色，与浅灰蓝页面背景形成良好对比 */
+  background: var(--game-bg);
   padding: 20px;
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  box-shadow: 0 10px 30px var(--shadow-color);
 }
 
 .board-wrapper {
@@ -103,16 +248,18 @@ body {
 .grid-cell {
   width: var(--cell-size);
   height: var(--cell-size);
-  /* 恢复内层小白框 */
-  background: url(./img/f41a080006e9cbd5b00a54fd407ad299.png) no-repeat center;
+  /* 恢复内层小白框 + 浅色背景 */
+  background:
+    url(./img/f41a080006e9cbd5b00a54fd407ad299.png) no-repeat center,
+    var(--cell-bg);
   background-size: 80%;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  transition: transform 0.1s, opacity 0.2s;
+  transition: transform 0.1s, opacity 0.2s, background-color 0.2s;
   /* 添加阴影让白框更明显 */
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  filter: drop-shadow(0 2px 4px var(--shadow-color));
 }
 
 .grid-cell:active {
@@ -133,11 +280,16 @@ body {
   cursor: default;
 }
 
-.status-msg { margin-top: 25px; font-weight: bold; color: var(--accent); height: 20px; }
+.status-msg { margin-top: 25px; font-weight: bold; color: var(--accent-dark); height: 20px; }
 .btn {
   margin-top: 15px; padding: 10px 30px;
-  background: #2f3542; color: white; border: none;
+  background: var(--accent); color: var(--text-color); border: none;
   border-radius: 6px; cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+.btn:hover {
+  background: var(--accent-dark);
 }
 
 /* 浮动面板 */
