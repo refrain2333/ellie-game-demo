@@ -76,7 +76,7 @@ function checkWin() {
   }
 
   setTimeout(() => {
-    alert('恭喜你，解开了谜题！');
+    document.getElementById('winOverlay').classList.add('show');
   }, 100);
 }
 

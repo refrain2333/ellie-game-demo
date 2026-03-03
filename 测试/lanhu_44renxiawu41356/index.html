@@ -53,6 +53,17 @@
         </div>
     </div>
 
+    <!-- 胜利弹窗 -->
+    <div class="win-overlay" id="winOverlay">
+        <div class="win-modal">
+            <button class="win-close" onclick="location.reload()">×</button>
+            <div class="win-emoji">🎉</div>
+            <div class="win-title">恭喜你！</div>
+            <div class="win-subtitle">解开了谜题</div>
+            <button class="win-btn" onclick="location.reload()">再玩一次</button>
+        </div>
+    </div>
+
     <script src="./game.js"></script>
     <script>
         document.getElementById('toggleRules').onclick = function(e) {
