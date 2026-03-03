@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>走一走：走出迷宫</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+    <!-- 规则按钮 -->
+    <button class="rules-btn" id="toggleRules">?</button>
+    <div class="rules-panel" id="rulesPanel">
+        <h3>游戏规则</h3>
+        <ul>
+            <li data-num="1">从左侧"入口"进入，按顺序寻找：面 → 泪 → 见 → 眉 → 循环</li>
+            <li data-num="2">每次只能移动到上下左右相邻的格子</li>
+            <li data-num="3">必须按正确顺序经过图标才能前进</li>
+            <li data-num="4">走到右上角"出口"即获胜</li>
+            <li data-num="5">点击已走过的格子可退回该位置</li>
+        </ul>
+    </div>
+
+    <div class="page">
+        <!-- 左侧区域 -->
+        <div class="left-panel">
+            <div class="header">
+                <h2>走一走</h2>
+                <p class="subtitle">按照顺序走出迷宫</p>
+            </div>
+
+            <!-- 序列展示 -->
+            <div class="sequence-container" id="legend"></div>
+
+            <div id="status-msg" class="status-msg">点击"入口"开始游戏</div>
+
+            <div class="controls">
+                <button class="btn" onclick="undoStep()">退一步</button>
+                <button class="btn reset-btn" onclick="resetGame()">重置游戏</button>
+            </div>
+        </div>
+
+        <!-- 透明分隔符 -->
+        <div class="test-spacer"></div>
+
+        <!-- 右侧游戏区 -->
+        <div class="game-container">
+            <div class="grid" id="maze"></div>
+        </div>
+    </div>
+
+    <!-- 胜利弹窗 -->
+    <div class="win-overlay" id="winOverlay">
+        <div class="win-modal">
+            <button class="win-close" onclick="closeWin()">×</button>
+            <div class="win-emoji">🎉</div>
+            <div class="win-title">恭喜你！</div>
+            <div class="win-subtitle">成功走出迷宫</div>
+            <button class="win-btn" onclick="resetGame()">再玩一次</button>
+        </div>
+    </div>
+
+    <script src="./game.js"></script>
+    <script>
+        document.getElementById('toggleRules').onclick = function(e) {
+            e.stopPropagation();
+            document.getElementById('rulesPanel').classList.toggle('open');
+        };
+        document.addEventListener('click', function() {
+            document.getElementById('rulesPanel').classList.remove('open');
+        });
+        document.getElementById('rulesPanel').onclick = function(e) {
+            e.stopPropagation();
+        };
+        function closeWin() {
+            document.getElementById('winOverlay').classList.remove('show');
+        }
+    </script>
+</body>
+</html>
