@@ -35,7 +35,12 @@ let pathHistory = [];
 let gameWon = false;
 
 function init() {
+    console.log('init called');
     const legend = document.getElementById('legend');
+    if (!legend) {
+        console.error('legend element not found!');
+        return;
+    }
     names.forEach((name, i) => {
         const div = document.createElement('div');
         div.className = 'seq-item';
