@@ -1,0 +1,8 @@
+# macOS
+.DS_Store
+
+# local scratch files
+Z-自用/
+
+# local Claude config
+CLAUDE.md

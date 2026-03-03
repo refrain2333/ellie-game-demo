@@ -1,400 +1,671 @@
 :root {
-  /* 儿歌配色 - 虫虫飞主题 */
-  --bg-color: #F5EED3;        /* 浅暖黄背景 */
-  --panel-bg: rgba(255, 255, 255, 0.92);
-  --accent: #ECC162;           /* 虫虫飞主题色 - 暖黄 */
-  --accent-dark: #D4A84B;     /* 主题色深色版 */
-  --text-color: #5C4A1F;      /* 深棕色文字 */
-  --text-light: #8B7355;      /* 浅棕色副文字 */
-  --cell-size: 90px;
-  --game-bg: #FFFEF5;         /* 米白色游戏背景 */
-  --cell-bg: #FAF6E8;         /* 浅黄格子背景 */
-  --shadow-color: rgba(92, 74, 31, 0.15);
+    --bg-color: #fdf6e3;
+    --panel-bg: rgba(255, 255, 255, 0.9);
+    --accent: #e8a935;
+    --accent-dark: #d4921f;
+    --text-color: #6b5344;
+    --text-light: #a08060;
+    --game-bg: #faf0d7;
+    --cell-bg: #fffcf5;
+    --shadow-color: rgba(180, 130, 60, 0.15);
+    --cell-size: 86px;
 }
 
-/* 移动端适配：缩小框框比例 */
 @media (max-width: 480px) {
-  :root { --cell-size: 75px; }
+    :root { --cell-size: 72px; }
 }
 
 @media (max-width: 360px) {
-  :root { --cell-size: 65px; }
+    :root { --cell-size: 64px; }
 }
 
-/* 移动端横屏适配 */
-@media (max-width: 768px) and (orientation: landscape) {
-  .left-panel {
-    width: 40% !important;
-    min-width: 0;
-  }
-  .game-container {
-    width: 50% !important;
-    min-width: 0;
-  }
-  .page {
-    gap: 0 !important;
-  }
-  .test-spacer {
-    width: 80px !important;
-    background: transparent !important;
-    flex-shrink: 0;
-    display: block !important;
-  }
+@media (max-width: 900px) and (orientation: landscape) {
+    :root { --cell-size: 62px; }
+
+    body {
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 8px;
+    }
+
+    .page {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        height: auto;
+        padding: 0;
+    }
+
+    .left-panel {
+        width: 60%;
+        min-width: 300px;
+        max-width: 450px;
+        gap: 12px;
+    }
+
+    .header { margin-bottom: 8px; }
+    .header h2 { font-size: 24px; margin-bottom: 4px; }
+    .subtitle { font-size: 14px; }
+
+    .symbol-legend {
+        gap: 12px;
+        padding: 10px 14px;
+        margin-bottom: 10px;
+    }
+
+    .legend-item img { width: 30px; height: 30px; }
+    .legend-item span { font-size: 13px; }
+
+    .status-msg { font-size: 16px; min-height: 22px; }
+
+    .controls {
+        gap: 10px;
+        margin-top: 4px;
+    }
+
+    .btn {
+        padding: 9px 14px;
+        font-size: 14px;
+    }
+
+    .test-spacer {
+        display: none;
+        width: 0;
+    }
+
+    .game-container {
+        width: auto;
+        min-width: 0;
+        padding: 6px;
+    }
+
+    .board-wrapper {
+        width: calc(4 * var(--cell-size) + 3 * 2 + 8px);
+        height: calc(4 * var(--cell-size) + 3 * 2 + 8px);
+    }
 }
 
-/* 横屏适配 */
-@media screen and (orientation: landscape) and (min-width: 500px), screen and (min-aspect-ratio: 13/9) {
-  :root {
-    --cell-size: 80px;
-  }
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 420px) {
+    :root { --cell-size: 54px; }
 
-  body {
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 0;
-  }
+    body {
+        padding: 4px;
+        overflow: hidden;
+    }
 
-  .page {
-    flex-direction: row !important;
-    align-items: center;
-    justify-content: center;
-    gap: 120px;
-    max-width: 650px;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-    padding: 2px 20px;
-    box-sizing: border-box;
-  }
+    .rules-btn {
+        top: 16px;
+        right: 16px;
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
 
-  .left-panel {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    width: 220px;
-    flex-shrink: 0;
-  }
+    .page {
+        gap: 6px;
+        transform: scale(0.96);
+        transform-origin: center center;
+    }
 
-  .header {
-    margin-bottom: 0;
-    text-align: center;
-  }
+    .left-panel {
+        width: 57%;
+        min-width: 240px;
+        max-width: 360px;
+        gap: 6px;
+    }
 
-  .header h2 {
-    font-size: 16px;
-    margin: 0;
-  }
+    .header { margin-bottom: 4px; }
+    .header h2 { font-size: 18px; }
+    .subtitle { display: none; }
 
-  .subtitle {
-    display: none;
-  }
+    .symbol-legend {
+        gap: 7px;
+        padding: 6px 8px;
+        margin-bottom: 4px;
+    }
 
-  .symbol-legend {
-    margin-bottom: 0;
-    gap: 6px;
-    padding: 5px 10px;
-  }
+    .legend-item img { width: 20px; height: 20px; }
+    .legend-item span { font-size: 10px; }
 
-  .legend-item img {
-    width: 20px;
-    height: 20px;
-  }
+    .status-msg { font-size: 12px; min-height: 16px; }
 
-  .legend-item span {
-    display: none;
-  }
+    .controls {
+        gap: 6px;
+        margin-top: 2px;
+    }
 
-  .game-container {
-    padding: 10px;
-    max-width: 100%;
-    overflow: hidden;
-  }
+    .btn {
+        padding: 5px 9px;
+        font-size: 12px;
+    }
 
-  .board-wrapper {
-    width: calc(var(--cell-size) * 4 + 10px);
-    height: calc(var(--cell-size) * 4 + 10px);
-  }
-
-  .status-msg {
-    display: block;
-    text-align: left;
-    font-size: 12px;
-    margin-top: 10px;
-  }
-
-  .controls {
-    width: 100%;
-  }
-
-  .btn {
-    width: 100%;
-    padding: 8px 15px;
-    font-size: 14px;
-  }
+    .game-container { padding: 4px; }
 }
 
-/* 窄横屏 - 紧凑模式 */
-@media (orientation: landscape) and (max-height: 500px) {
-  :root { --cell-size: 65px; }
-  .page { gap: 20px; padding: 2px 4px; }
-  .left-panel { gap: 6px; }
-  .header h2 { font-size: 16px; }
-  .symbol-legend { padding: 5px 10px; gap: 6px; }
-  .game-container { padding: 8px; }
-  .btn { padding: 6px 12px; font-size: 12px; }
+@media screen and (orientation: landscape) and (min-width: 901px) {
+    :root { --cell-size: clamp(76px, 5vw, 96px); }
+
+    body {
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 0;
+    }
+
+    .page {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(28px, 5vw, 88px);
+        width: min(1100px, 100%);
+        max-width: 1100px;
+        height: 100vh;
+        overflow: hidden;
+        padding: 16px;
+    }
+
+    .left-panel {
+        width: clamp(220px, 24vw, 320px);
+        min-width: 220px;
+        max-width: 320px;
+        flex-shrink: 0;
+    }
+
+    .header h2 { font-size: 22px; }
+    .subtitle { font-size: 13px; display: block; }
+
+    .test-spacer {
+        width: clamp(0px, 2vw, 28px);
+        flex-shrink: 0;
+        background: transparent;
+    }
+
+    .game-container {
+        width: calc(4 * var(--cell-size) + 3 * 2 + 8px + 24px);
+        max-width: 100%;
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .board-wrapper {
+        width: calc(4 * var(--cell-size) + 3 * 2 + 8px);
+        height: calc(4 * var(--cell-size) + 3 * 2 + 8px);
+    }
 }
 
 * {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-  /* 防止选中文本和图片 */
-  -webkit-user-select: none;
-  user-select: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--bg-color);
-  font-family: -apple-system, system-ui, "Microsoft YaHei", sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    background-color: var(--bg-color);
+    font-family: -apple-system, system-ui, "Microsoft YaHei", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
 }
 
 .page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 30px 20px;
-  width: 100%;
-  max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
 }
 
-/* 测试分隔符 */
 .test-spacer {
-  width: 60px;
-  background: transparent;
+    width: 60px;
+    background: transparent;
 }
 
 .left-panel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    gap: 10px;
 }
 
-.header { text-align: center; margin-bottom: 25px; }
-.header h2 { margin: 0; font-size: 24px; color: var(--text-color); font-weight: 600; }
-.subtitle { font-size: 14px; color: var(--text-light); margin-top: 5px; }
-
-/* 规则标号样式 - 完美复刻 1.html */
-.rules-panel ul {
-  margin: 0; padding: 0; list-style: none;
-  display: flex; flex-direction: column; gap: 12px;
-}
-
-.rules-panel li {
-  font-size: 13px; color: var(--text-color);
-  display: flex; align-items: flex-start; gap: 10px; line-height: 1.5;
-}
-
-.rules-panel li::before {
-  content: attr(data-num);
-  flex-shrink: 0; width: 18px; height: 18px;
-  background: var(--accent); color: #fff; border-radius: 50%;
-  font-size: 11px; font-weight: bold;
-  display: flex; align-items: center; justify-content: center;
-  margin-top: 1px;
-}
+.header { text-align: center; margin-bottom: 10px; }
+.header h2 { font-size: 20px; color: var(--text-color); font-weight: 600; margin-bottom: 4px; }
+.subtitle { font-size: 12px; color: var(--text-light); }
 
 .symbol-legend {
-  display: flex; gap: 20px;
-  background: white; padding: 10px 25px;
-  border-radius: 50px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-  margin-bottom: 30px;
+    display: flex;
+    gap: 12px;
+    background: white;
+    padding: 8px 16px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-.legend-item img { width: 30px; height: 30px; object-fit: contain; }
-.legend-item span { font-size: 11px; color: #aaa; margin-top: 2px; }
+.legend-item {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.legend-item img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.legend-item span {
+    font-weight: bold;
+    font-size: 11px;
+    line-height: 1.2;
+    color: var(--text-color);
+}
 
 .game-container {
-  background: var(--game-bg);
-  padding: 20px;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px var(--shadow-color);
+    background: var(--game-bg);
+    padding: 12px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px var(--shadow-color);
 }
 
 .board-wrapper {
-  width: calc(var(--cell-size) * 4 + 20px);
-  height: calc(var(--cell-size) * 4 + 20px);
-  /* 移除外层大边框背景图 */
-  background: transparent;
-  display: flex; justify-content: center; align-items: center;
+    width: calc(4 * var(--cell-size) + 3 * 2 + 8px);
+    height: calc(4 * var(--cell-size) + 3 * 2 + 8px);
 }
 
 .game-grid {
-  display: grid;
-  grid-template-columns: repeat(4, var(--cell-size));
-  grid-template-rows: repeat(4, var(--cell-size));
-  gap: 2px;
-  margin-top: -3px;
+    display: grid;
+    grid-template-columns: repeat(4, var(--cell-size));
+    grid-template-rows: repeat(4, var(--cell-size));
+    gap: 2px;
+    background: #d4a84b;
+    border: 4px solid #d4a84b;
 }
 
 .grid-cell {
-  width: var(--cell-size);
-  height: var(--cell-size);
-  /* 恢复内层小白框 + 浅色背景 */
-  background:
-    url(./img/f41a080006e9cbd5b00a54fd407ad299.png) no-repeat center,
-    var(--cell-bg);
-  background-size: 80%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transition: transform 0.1s, opacity 0.2s, background-color 0.2s;
-  /* 添加阴影让白框更明显 */
-  filter: drop-shadow(0 2px 4px var(--shadow-color));
+    width: var(--cell-size);
+    height: var(--cell-size);
+    background: var(--cell-bg) url(./img/f41a080006e9cbd5b00a54fd407ad299.png) no-repeat center;
+    background-size: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    filter: drop-shadow(0 2px 4px var(--shadow-color));
+    transition: transform 0.1s, filter 0.2s;
 }
 
-.grid-cell:active {
-  transform: scale(0.92);
-}
+.grid-cell:active { transform: scale(0.95); }
 
 .grid-cell img {
-  width: 45%; /* 同步缩小符号，使其完美契合缩小的白框 */
-  height: 45%;
-  object-fit: contain;
-  pointer-events: none;
-  /* 移除偏移，让flexbox自然居中 */
+    width: 52%;
+    height: 52%;
+    object-fit: contain;
+    pointer-events: none;
 }
 
 .grid-cell.fixed {
-  opacity: 0.65;
-  pointer-events: none;
-  cursor: default;
+    opacity: 0.65;
+    pointer-events: none;
+    cursor: default;
 }
 
-.status-msg { margin-top: 25px; font-weight: bold; color: var(--accent-dark); height: 20px; }
+.status-msg {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--accent-dark);
+    min-height: 20px;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
 .btn {
-  margin-top: 15px; padding: 10px 30px;
-  background: var(--accent); color: var(--text-color); border: none;
-  border-radius: 6px; cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.2s;
-}
-.btn:hover {
-  background: var(--accent-dark);
+    padding: 8px 16px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s;
 }
 
-/* 浮动面板 */
-.rules-btn {
-  position: fixed; top: 20px; right: 20px;
-  width: 36px; height: 36px; border-radius: 50%;
-  background: var(--accent); color: white; border: none;
-  font-size: 18px; font-weight: bold; cursor: pointer; z-index: 100;
+.btn:hover { background: var(--accent-dark); }
+
+.reset-btn {
+    background: var(--accent-dark);
+    color: white;
 }
+
+.reset-btn:hover { background: var(--accent-dark); }
+
+.rules-btn {
+    position: fixed;
+    top: max(24px, env(safe-area-inset-top));
+    right: max(24px, env(safe-area-inset-right));
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 100;
+}
+
+.rules-btn:hover { background: var(--accent-dark); }
 
 .rules-panel {
-  display: none; position: fixed; top: 70px; right: 20px; width: 260px;
-  background: var(--panel-bg); backdrop-filter: blur(10px);
-  padding: 20px; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-  z-index: 99; border: 1px solid rgba(255,255,255,0.5);
+    display: none;
+    position: fixed;
+    top: calc(max(24px, env(safe-area-inset-top)) + 44px);
+    right: max(24px, env(safe-area-inset-right));
+    width: 260px;
+    background: var(--panel-bg);
+    backdrop-filter: blur(10px);
+    padding: 18px 20px;
+    border-radius: 14px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    z-index: 99;
+    border: 1px solid rgba(255,255,255,0.5);
 }
+
 .rules-panel.open { display: block; }
-.rules-panel h3 { margin: 0 0 15px 0; font-size: 16px; border-left: 4px solid var(--accent); padding-left: 10px; }
 
-/* 胜利弹窗 */
+.rules-panel h3 {
+    margin: 0 0 14px 0;
+    font-size: 15px;
+    color: var(--text-color);
+    border-left: 4px solid var(--accent);
+    padding-left: 10px;
+}
+
+.rules-panel ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rules-panel li {
+    font-size: 13px;
+    color: var(--text-color);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.5;
+}
+
+.rules-panel li::before {
+    content: attr(data-num);
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+}
+
 .win-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
-.win-overlay.show {
-  display: flex;
-}
+.win-overlay.show { display: flex; }
 
 .win-modal {
-  background: white;
-  padding: 40px 60px;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-  animation: modalIn 0.3s ease-out;
-  position: relative;
+    background: white;
+    padding: 40px 50px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    animation: modalIn 0.3s ease-out;
+    position: relative;
 }
 
 @keyframes modalIn {
-  0% { transform: scale(0.8); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
 }
 
 .win-close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 32px;
-  height: 32px;
-  background: #eee;
-  border: none;
-  border-radius: 50%;
-  font-size: 20px;
-  color: #666;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    background: #eee;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    color: #666;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
 }
 
-.win-close:hover {
-  background: #ddd;
-  color: #333;
-}
+.win-close:hover { background: #ddd; color: #333; }
 
-.win-emoji {
-  font-size: 56px;
-  margin-bottom: 12px;
-}
-
-.win-title {
-  font-size: 26px;
-  font-weight: bold;
-  color: var(--text-color);
-  margin-bottom: 6px;
-}
-
-.win-subtitle {
-  font-size: 15px;
-  color: #888;
-  margin-bottom: 25px;
-}
+.win-emoji { font-size: 50px; margin-bottom: 10px; }
+.win-title { font-size: 24px; font-weight: bold; color: var(--text-color); margin-bottom: 5px; }
+.win-subtitle { font-size: 14px; color: #888; margin-bottom: 20px; }
 
 .win-btn {
-  padding: 12px 36px;
-  background: var(--accent);
-  color: var(--text-color);
-  border: none;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
+    padding: 12px 30px;
+    background: var(--accent);
+    color: var(--text-color);
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
 }
 
-.win-btn:hover {
-  background: #D4A84B;
+.win-btn:hover { background: var(--accent-dark); }
+
+/* 响应式覆盖（放在文件末尾，避免被基础样式覆盖） */
+@media (max-width: 900px) and (orientation: landscape) {
+    :root { --cell-size: 62px; }
+
+    body {
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 8px;
+    }
+
+    .page {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        height: auto;
+        padding: 0;
+    }
+
+    .left-panel {
+        width: 60%;
+        min-width: 300px;
+        max-width: 450px;
+        gap: 12px;
+    }
+
+    .header { margin-bottom: 8px; }
+    .header h2 { font-size: 24px; margin-bottom: 4px; }
+    .subtitle { font-size: 14px; }
+
+    .symbol-legend {
+        gap: 12px;
+        padding: 10px 14px;
+        margin-bottom: 10px;
+    }
+
+    .legend-item img { width: 30px; height: 30px; }
+    .legend-item span { font-size: 13px; }
+
+    .status-msg { font-size: 16px; min-height: 22px; }
+
+    .controls {
+        gap: 10px;
+        margin-top: 4px;
+    }
+
+    .btn {
+        padding: 9px 14px;
+        font-size: 14px;
+    }
+
+    .test-spacer {
+        display: none;
+        width: 0;
+    }
+
+    .game-container {
+        width: auto;
+        min-width: 0;
+        padding: 6px;
+    }
+
+    .board-wrapper {
+        width: calc(4 * var(--cell-size) + 3 * 2 + 8px);
+        height: calc(4 * var(--cell-size) + 3 * 2 + 8px);
+    }
+}
+
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 420px) {
+    :root { --cell-size: 54px; }
+
+    body {
+        padding: 4px;
+        overflow: hidden;
+    }
+
+    .rules-btn {
+        top: 16px;
+        right: 16px;
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
+
+    .page {
+        gap: 6px;
+        transform: scale(0.96);
+        transform-origin: center center;
+    }
+
+    .left-panel {
+        width: 57%;
+        min-width: 240px;
+        max-width: 360px;
+        gap: 6px;
+    }
+
+    .header { margin-bottom: 4px; }
+    .header h2 { font-size: 18px; }
+    .subtitle { display: none; }
+
+    .symbol-legend {
+        gap: 7px;
+        padding: 6px 8px;
+        margin-bottom: 4px;
+    }
+
+    .legend-item img { width: 20px; height: 20px; }
+    .legend-item span { font-size: 10px; }
+
+    .status-msg { font-size: 12px; min-height: 16px; }
+
+    .controls {
+        gap: 6px;
+        margin-top: 2px;
+    }
+
+    .btn {
+        padding: 5px 9px;
+        font-size: 12px;
+    }
+
+    .game-container { padding: 4px; }
+}
+
+@media screen and (orientation: landscape) and (min-width: 901px) {
+    :root { --cell-size: clamp(76px, 5vw, 96px); }
+
+    body {
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 0;
+    }
+
+    .page {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(28px, 5vw, 88px);
+        width: min(1100px, 100%);
+        max-width: 1100px;
+        height: 100vh;
+        overflow: hidden;
+        padding: 16px;
+    }
+
+    .left-panel {
+        width: clamp(220px, 24vw, 320px);
+        min-width: 220px;
+        max-width: 320px;
+        flex-shrink: 0;
+    }
+
+    .test-spacer {
+        width: clamp(0px, 2vw, 28px);
+        flex-shrink: 0;
+        background: transparent;
+    }
+
+    .game-container {
+        width: calc(4 * var(--cell-size) + 3 * 2 + 8px + 24px);
+        max-width: 100%;
+        min-width: 0;
+        overflow: hidden;
+    }
 }

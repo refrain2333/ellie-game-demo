@@ -80,7 +80,7 @@ function renderMaze() {
                 tile.innerHTML = '<div class="label">出口<br>^</div>';
             } else {
                 tile.innerHTML = icons[val];
-                tile.style.color = (styleMap[r][c] === 3) ? '#fff' : '#333';
+                tile.style.color = (styleMap[r][c] === 3) ? '#54675c' : '#6f8478';
             }
 
             tile.onclick = function() { handleTileClick(r, c); };
@@ -203,20 +203,7 @@ function updatePathVisuals() {
 
         if (index < pathHistory.length - 1) {
             const nextPos = pathHistory[index + 1];
-            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-
-            const _ts = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--tile-size'));
-            const x1 = pos.c * (_ts + 2) + _ts / 2;
-            const y1 = pos.r * (_ts + 2) + _ts / 2;
-            const x2 = nextPos.c * (_ts + 2) + _ts / 2;
-            const y2 = nextPos.r * (_ts + 2) + _ts / 2;
-
-            line.setAttribute('x1', x1);
-            line.setAttribute('y1', y1);
-            line.setAttribute('x2', x2);
-            line.setAttribute('y2', y2);
-
-            svg.appendChild(line);
+            void nextPos;
         }
     });
 }
