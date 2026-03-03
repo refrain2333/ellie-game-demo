@@ -45,7 +45,7 @@
 /* 横屏适配 */
 @media screen and (orientation: landscape) and (min-width: 500px), screen and (min-aspect-ratio: 13/9) {
   :root {
-    --cell-size: 90px;
+    --cell-size: 80px;
   }
 
   body {
