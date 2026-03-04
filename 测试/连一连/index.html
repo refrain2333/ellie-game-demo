@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>连一连：路径匹配</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+    <button class="rules-btn" id="toggleRules">?</button>
+    <div class="rules-panel" id="rulesPanel">
+        <h3>游戏规则</h3>
+        <ul>
+            <li data-num="1">先点击上方图标，再点击下方文字。</li>
+            <li data-num="2">只有图标与文字一一对应才算匹配成功。</li>
+            <li data-num="3">路径会互相交叉，请沿线观察对应关系。</li>
+            <li data-num="4">四组全部匹配完成即通关。</li>
+        </ul>
+    </div>
+
+    <div class="page">
+        <div class="left-panel">
+            <div class="header">
+                <h2>连一连</h2>
+                <p class="subtitle">跟随连线，找出正确对应</p>
+            </div>
+
+            <div class="hint-card">
+                <p>点击顺序：上方图标 → 下方文字</p>
+                <p>可用「换一组连线」挑战不同路径布局</p>
+            </div>
+
+            <div id="statusMsg" class="status-msg">请选择一个上方图标开始</div>
+            <div id="progressMsg" class="progress-msg">已完成 0/4</div>
+
+            <div class="controls">
+                <button class="btn" id="resetBtn">重置本局</button>
+                <button class="btn reset-btn" id="nextLayoutBtn">换一组连线</button>
+            </div>
+        </div>
+
+        <div class="test-spacer"></div>
+
+        <div class="game-container">
+            <div class="game-stage">
+                <svg id="pathLayer" viewBox="0 0 800 1000" preserveAspectRatio="none" aria-hidden="true"></svg>
+                <div id="topRow" class="top-row"></div>
+                <div id="bottomRow" class="bottom-row"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="win-overlay" id="winOverlay">
+        <div class="win-modal">
+            <button class="win-close" id="closeWin">×</button>
+            <div class="win-title">挑战成功</div>
+            <div class="win-subtitle">全部匹配完成</div>
+            <button class="win-btn" id="winReplayBtn">再玩一次</button>
+        </div>
+    </div>
+
+    <script src="./game.js"></script>
+</body>
+</html>
