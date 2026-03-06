@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>连一连：路径匹配</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+    <button class="rules-btn" id="toggleRules">?</button>
+    <div class="rules-panel" id="rulesPanel">
+        <h3>游戏规则</h3>
+        <ul>
+            <li data-num="1">按住上方图标，手指不松开，跟着弯曲线路一路走到底。</li>
+            <li data-num="2">头像会自动吸附在线路上，沿线滑到底部文字处松手即匹配。</li>
+            <li data-num="3">路径相互交叉，认准自己那条线不要走错！</li>
+            <li data-num="4">五组全部匹配完成即通关。</li>
+        </ul>
+    </div>
+
+    <div class="page">
+        <div class="left-panel">
+            <div class="header">
+                <h2>连一连（牙、尿、儿、屎、齿）</h2>
+                <p class="subtitle">跟随连线，找出正确对应</p>
+            </div>
+
+            <div class="hint-card">
+                <p>操作方式：按住图标 → 跟着弯路滑到底 → 到终点松手</p>
+                <p>头像会吸附在路径上，沿线走完才算成功</p>
+            </div>
+
+            <div id="statusMsg" class="status-msg">按住上方图标，跟着弯路走到底部</div>
+            <div id="progressMsg" class="progress-msg">已完成 0/4</div>
+
+            <div class="controls">
+                <button class="btn" id="resetBtn">重置本局</button>
+                <button class="btn reset-btn" id="nextLayoutBtn">换一组连线</button>
+            </div>
+        </div>
+
+        <div class="test-spacer"></div>
+
+        <div class="game-container">
+            <div class="game-stage">
+                <svg id="pathLayer" viewBox="0 0 800 1000" preserveAspectRatio="none" aria-hidden="true"></svg>
+                <div id="topRow" class="top-row"></div>
+                <div id="bottomRow" class="bottom-row"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="win-overlay" id="winOverlay">
+        <div class="win-modal">
+            <button class="win-close" id="closeWin">×</button>
+            <div class="win-title">挑战成功</div>
+            <div class="win-subtitle">全部匹配完成</div>
+            <button class="win-btn" id="winReplayBtn">再玩一次</button>
+        </div>
+    </div>
+
+    <script src="./game.js"></script>
+</body>
+</html>

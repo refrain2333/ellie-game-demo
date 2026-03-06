@@ -1,0 +1,845 @@
+:root {
+    --bg-color: #eef3fb;
+    --panel-bg: rgba(255, 255, 255, 0.9);
+    --accent: #77a4ea;
+    --accent-dark: #5e8dd7;
+    --text-color: #3f4f67;
+    --text-light: #75859d;
+    --game-bg: #f7faff;
+    --shadow-color: rgba(90, 119, 164, 0.16);
+    --line-base: #ffffff;
+    --line-under: #c5d4e9;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+body {
+    background-color: var(--bg-color);
+    font-family: -apple-system, system-ui, "Microsoft YaHei", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+}
+
+.left-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    gap: 10px;
+}
+
+.test-spacer {
+    width: 60px;
+    background: transparent;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.header h2 {
+    font-size: 22px;
+    color: var(--text-color);
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.subtitle {
+    font-size: 12px;
+    color: var(--text-light);
+}
+
+.hint-card {
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    padding: 10px 14px;
+    color: var(--text-light);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.status-msg {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent-dark);
+    min-height: 20px;
+}
+
+.status-msg.error {
+    color: #cc4f5d;
+}
+
+.status-msg.success {
+    color: #4d9a72;
+}
+
+.progress-msg {
+    font-size: 12px;
+    color: var(--text-light);
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.btn {
+    padding: 8px 14px;
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn:hover {
+    background: var(--accent-dark);
+}
+
+.reset-btn {
+    background: #7f9bc7;
+}
+
+.reset-btn:hover {
+    background: #6f8ab6;
+}
+
+.game-container {
+    background: var(--game-bg);
+    padding: 12px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px var(--shadow-color);
+}
+
+.game-stage {
+    position: relative;
+    width: 400px;
+    height: 500px;
+    background: linear-gradient(180deg, #f3f7ff 0%, #eef4ff 100%);
+    border: 2px solid #d7e3f6;
+    border-radius: 18px;
+    overflow: hidden;
+    /* 关键：禁止浏览器接管触摸，防止 pointercancel */
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+#pathLayer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.pick-btn {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s;
+    z-index: 10;
+    touch-action: none;
+    -webkit-touch-callout: none; /* 禁止 iOS 长按菜单 */
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.pick-asset {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.pick-asset-top {
+    width: 78%;
+    height: 78%;
+}
+
+.pick-asset-bottom {
+    width: auto;
+    height: 28px;
+    max-width: 72px;
+    filter: drop-shadow(0 1px 0 rgba(46, 63, 88, 0.22));
+}
+
+.top-btn {
+    top: 15%;
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #98a8bc 0%, #7d90a8 100%);
+    border: 2px solid #7286a0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 20px rgba(120, 147, 190, 0.24);
+    touch-action: none;
+    -webkit-touch-callout: none;
+}
+
+.bottom-btn {
+    top: 92%;
+    border-radius: 12px;
+    width: 78px;
+    height: 48px;
+    padding: 0;
+    background: linear-gradient(180deg, #8fa3bf 0%, #7389a8 100%);
+    border: 2px solid #6f86a4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 20px rgba(120, 147, 190, 0.26);
+}
+
+.pick-btn:hover {
+    transform: translate(-50%, -50%) scale(1.05);
+}
+
+.pick-btn.selected {
+    border-color: #f5d774;
+    box-shadow: 0 0 0 3px rgba(245, 215, 116, 0.35);
+}
+
+.pick-btn.solved {
+    border-color: #69c89a;
+    box-shadow: 0 0 0 3px rgba(105, 200, 154, 0.35);
+    color: #2f7d58;
+}
+
+.bottom-btn.solved {
+    background: linear-gradient(180deg, #78c69a 0%, #58a979 100%);
+    border-color: #5ca67b;
+}
+
+.top-btn.solved {
+    background: linear-gradient(180deg, #78c69a 0%, #58a979 100%);
+    border-color: #5ca67b;
+}
+
+.pick-btn.wrong {
+    border-color: #e98a97;
+    box-shadow: 0 0 0 3px rgba(233, 138, 151, 0.3);
+    animation: shake 0.35s linear;
+}
+
+.path-shadow {
+    fill: none;
+    stroke: #b8c9e4;
+    stroke-width: 24;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.path-base {
+    fill: none;
+    stroke: #e8eef7;
+    stroke-width: 16;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.path-solved {
+    fill: none;
+    stroke-width: 16;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 8px currentColor);
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: draw-line 0.8s ease-out forwards;
+}
+
+@keyframes draw-line {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.rules-btn {
+    position: fixed;
+    top: max(24px, env(safe-area-inset-top));
+    right: max(24px, env(safe-area-inset-right));
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    z-index: 100;
+}
+
+.rules-btn:hover {
+    background: var(--accent-dark);
+}
+
+.rules-panel {
+    display: none;
+    position: fixed;
+    top: calc(max(24px, env(safe-area-inset-top)) + 44px);
+    right: max(24px, env(safe-area-inset-right));
+    width: 260px;
+    background: var(--panel-bg);
+    backdrop-filter: blur(10px);
+    padding: 18px 20px;
+    border-radius: 14px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    z-index: 99;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.rules-panel.open {
+    display: block;
+}
+
+.rules-panel h3 {
+    margin: 0 0 14px 0;
+    font-size: 15px;
+    color: var(--text-color);
+    border-left: 4px solid var(--accent);
+    padding-left: 10px;
+}
+
+.rules-panel ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rules-panel li {
+    font-size: 13px;
+    color: var(--text-color);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.5;
+}
+
+.rules-panel li::before {
+    content: attr(data-num);
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    background: var(--accent);
+    color: #ffffff;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+}
+
+.win-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.win-overlay.show {
+    display: flex;
+}
+
+.win-modal {
+    background: #ffffff;
+    padding: 36px 44px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    animation: modal-in 0.3s ease-out;
+    position: relative;
+}
+
+.win-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    background: #ecf0f7;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    color: #66768f;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.win-close:hover {
+    background: #dde5f2;
+}
+
+.win-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 6px;
+}
+
+.win-subtitle {
+    font-size: 14px;
+    color: #7d8ca3;
+    margin-bottom: 20px;
+}
+
+.win-btn {
+    padding: 12px 28px;
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.win-btn:hover {
+    background: var(--accent-dark);
+}
+
+@keyframes shake {
+    25% {
+        transform: translate(-50%, -50%) translateX(-5px);
+    }
+
+    75% {
+        transform: translate(-50%, -50%) translateX(5px);
+    }
+}
+
+@keyframes modal-in {
+    0% {
+        transform: scale(0.82);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ── 迷宫拖拽新增样式 ── */
+
+/* 被拖起时原始按钮变幽灵：半透明 + 禁交互 */
+.pick-btn.ghost {
+    opacity: 0.22;
+    pointer-events: none;
+    filter: grayscale(0.5);
+    transition: opacity 0.15s;
+}
+
+/* 浮动头像（拖动中的可移动副本） */
+.floating-avatar {
+    position: absolute;
+    z-index: 20;
+    pointer-events: none;   /* 防止截获指针事件 */
+    will-change: left, top;
+    /* 继承 .top-btn 的圆角、背景、阴影 */
+}
+
+/* 浮动头像拖动中放大 + 发光 */
+.floating-avatar.dragging {
+    transform: translate(-50%, -50%) scale(1.18) !important;
+    box-shadow: 0 0 0 5px rgba(119, 164, 234, 0.45),
+                0 12px 30px rgba(100, 140, 200, 0.35) !important;
+    border-color: #8fb1eb !important;
+    transition: none !important; /* 拖动过程中不加过渡，保证丝滑 */
+}
+
+/* 成功吸附到终点时的弹入动画 */
+.floating-avatar.floating-snap {
+    transition: left 0.25s cubic-bezier(.34, 1.56, .64, 1),
+                top  0.25s cubic-bezier(.34, 1.56, .64, 1) !important;
+    transform: translate(-50%, -50%) scale(1.1) !important;
+}
+
+/* 失败弹回起点的弹跳动画 */
+.floating-avatar.floating-bounce-back {
+    transition: left 0.45s cubic-bezier(.34, 1.56, .64, 1),
+                top  0.45s cubic-bezier(.34, 1.56, .64, 1) !important;
+    animation: bounce-back-shake 0.45s ease-out !important;
+}
+
+/* 暂停停留在路径上：轻微呼吸动效，提示可再次按住继续 */
+.floating-avatar.paused {
+    border-color: #f5c842 !important;
+    box-shadow: 0 0 0 4px rgba(245, 200, 66, 0.35),
+                0 6px 18px rgba(180, 140, 20, 0.2) !important;
+    animation: paused-breathe 1.4s ease-in-out infinite !important;
+    cursor: grab;
+    pointer-events: auto; /* 暂停时需要响应点击，覆盖 floating-avatar 的 none */
+}
+
+@keyframes paused-breathe {
+    0%, 100% { transform: translate(-50%, -50%) scale(1);    opacity: 0.85; }
+    50%       { transform: translate(-50%, -50%) scale(1.1); opacity: 1;    }
+}
+
+/* 偏离路径时：头像变红色并持续微抖 */
+.floating-avatar.off-path {
+    border-color: #e98a97 !important;
+    box-shadow: 0 0 0 4px rgba(233, 138, 151, 0.4),
+                0 8px 20px rgba(200, 80, 100, 0.2) !important;
+    animation: off-path-wiggle 0.4s ease-in-out infinite !important;
+}
+
+@keyframes off-path-wiggle {
+    0%   { transform: translate(-50%, -50%) rotate(-6deg) scale(1.05); }
+    50%  { transform: translate(-50%, -50%) rotate(6deg)  scale(1.05); }
+    100% { transform: translate(-50%, -50%) rotate(-6deg) scale(1.05); }
+}
+
+@keyframes bounce-back-shake {
+    0%   { filter: hue-rotate(0deg); }
+    40%  { filter: hue-rotate(20deg) brightness(1.1); }
+    100% { filter: hue-rotate(0deg); }
+}
+
+/* 拖拽进度轨迹（彩色，随拖动延伸） */
+.path-trail {
+    fill: none;
+    stroke-width: 14;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.88;
+    pointer-events: none;
+    /* 去掉过渡，轨迹跟指头完全同步，没有延迟感 */
+    transition: none;
+}
+
+/* 成功完成后轨迹补全到 100% + 发光 */
+.path-trail-solved {
+    opacity: 1;
+    filter: drop-shadow(0 0 10px currentColor);
+    transition: stroke-dashoffset 0.45s ease-out,
+                filter 0.3s ease-out !important;
+}
+
+/* 失败时轨迹淡出 */
+.path-trail-fade {
+    opacity: 0 !important;
+    transition: opacity 0.35s ease-out !important;
+}
+
+@media (max-width: 900px) and (orientation: landscape) {
+    body {
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 8px;
+    }
+
+    .page {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        height: auto;
+        padding: 0;
+    }
+
+    .left-panel {
+        width: 50%;
+        min-width: 260px;
+        max-width: 400px;
+        gap: 10px;
+    }
+
+    .header {
+        margin-bottom: 6px;
+    }
+
+    .header h2 {
+        font-size: 22px;
+    }
+
+    .subtitle {
+        font-size: 13px;
+    }
+
+    .hint-card {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+
+    .status-msg {
+        font-size: 15px;
+    }
+
+    .progress-msg {
+        font-size: 12px;
+    }
+
+    .controls {
+        gap: 8px;
+    }
+
+    .btn {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    .test-spacer {
+        display: none;
+        width: 0;
+    }
+
+    .game-container {
+        width: auto;
+        min-width: 0;
+        padding: 8px;
+    }
+
+    .game-stage {
+        width: calc(min(78vh, 420px) * 1.3);
+        height: min(78vh, 420px);
+        min-height: 0;
+        aspect-ratio: auto;
+    }
+
+    .top-btn {
+        width: 54px;
+        height: 54px;
+    }
+
+    .bottom-btn {
+        width: 58px;
+        height: 40px;
+        padding: 0;
+    }
+}
+
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 420px) {
+    body {
+        padding: 4px;
+        overflow: hidden;
+    }
+
+    .rules-btn {
+        top: 16px;
+        right: 16px;
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
+
+    .page {
+        gap: 6px;
+        transform: scale(0.96);
+        transform-origin: center center;
+    }
+
+    .left-panel {
+        width: 48%;
+        min-width: 220px;
+        max-width: 340px;
+        gap: 6px;
+    }
+
+    .header {
+        margin-bottom: 4px;
+    }
+
+    .header h2 {
+        font-size: 18px;
+    }
+
+    .subtitle {
+        display: none;
+    }
+
+    .hint-card {
+        font-size: 10px;
+        padding: 6px 8px;
+    }
+
+    .status-msg {
+        font-size: 12px;
+        min-height: 16px;
+    }
+
+    .progress-msg {
+        font-size: 10px;
+    }
+
+    .btn {
+        padding: 5px 9px;
+        font-size: 12px;
+    }
+
+    .game-container {
+        padding: 6px;
+    }
+
+    .game-stage {
+        width: calc(min(72vh, 340px) * 1.3);
+        height: min(72vh, 340px);
+        min-height: 0;
+        aspect-ratio: auto;
+    }
+
+    .top-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+    }
+
+    .bottom-btn {
+        width: 66px;
+        height: 34px;
+        padding: 0;
+        border-radius: 10px;
+    }
+}
+
+@media screen and (orientation: landscape) and (min-width: 901px) {
+    body {
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 0;
+    }
+
+    .page {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(28px, 5vw, 88px);
+        width: min(1200px, 100%);
+        max-width: 1200px;
+        height: 100vh;
+        overflow: hidden;
+        padding: 16px;
+    }
+
+    .left-panel {
+        width: clamp(220px, 24vw, 320px);
+        min-width: 220px;
+        max-width: 320px;
+        flex-shrink: 0;
+    }
+
+    .header h2 {
+        font-size: 22px;
+    }
+
+    .subtitle {
+        font-size: 13px;
+        display: block;
+    }
+
+    .test-spacer {
+        width: clamp(0px, 2vw, 28px);
+        flex-shrink: 0;
+        background: transparent;
+    }
+
+    .game-container {
+        width: min(62vw, 760px);
+        max-width: 760px;
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .game-stage {
+        width: 100%;
+        min-height: 520px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 14px;
+    }
+
+    .header h2 {
+        font-size: 20px;
+    }
+
+    .hint-card {
+        width: 100%;
+    }
+
+    .game-stage {
+        width: min(92vw, 560px);
+        min-height: 420px;
+    }
+
+    .top-btn {
+        width: 52px;
+        height: 52px;
+        font-size: 28px;
+    }
+
+    .bottom-btn {
+        width: 78px;
+        height: 40px;
+        padding: 0;
+    }
+}
+
+
+@media (max-width: 900px) and (orientation: landscape) {
+    .pick-asset-bottom {
+        height: 24px;
+        max-width: 70px;
+    }
+}
+
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 420px) {
+    .pick-asset-bottom {
+        height: 20px;
+        max-width: 58px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pick-asset-bottom {
+        height: 22px;
+        max-width: 64px;
+    }
+}
