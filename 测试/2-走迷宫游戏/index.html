@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>走迷宫：帮老虎吃到肉</title>
+  <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+  <button class="rules-btn" id="toggleRules" aria-label="查看规则">?</button>
+  <aside class="rules-panel" id="rulesPanel">
+    <h3>游戏规则</h3>
+    <ul>
+      <li data-num="1">按住老虎，沿着路径拖动前进。</li>
+      <li data-num="2">必须先吃到肉，才算完成第一阶段。</li>
+      <li data-num="3">吃到肉后继续沿线前进，抵达出口即可通关。</li>
+      <li data-num="4">若偏离路径过远，老虎会停住，需重新贴线移动。</li>
+      <li data-num="5">注意颜色相通的路线，有时候近路不是路，远路才是路。</li>
+    </ul>
+  </aside>
+
+  <main class="maze-app">
+    <aside class="left-panel">
+      <header class="title-wrap">
+        <p class="kicker">MAZE MISSION</p>
+        <h1>走迷宫</h1>
+        <p>先吃肉，再冲向出口</p>
+      </header>
+
+      <div class="hint-card">
+        <p>操作方式：按住老虎 → 沿着路径拖动 → 先到肉再到出口。</p>
+        <p>这是“沿轨道”玩法，不需要走直线抄近路。</p>
+        <p>注意：颜色相通的路才能走，有时候近路不是路，远路才是路。</p>
+      </div>
+
+      <div class="legend">
+        <span class="chip start">入口</span>
+        <span class="chip target">肉</span>
+        <span class="chip exit">出口</span>
+      </div>
+
+      <div class="progress" id="progressBoard">
+        <div class="step active" id="stepMeat">
+          <span class="dot"></span>
+          <span>先吃到肉</span>
+        </div>
+        <div class="step" id="stepExit">
+          <span class="dot"></span>
+          <span>再前往出口</span>
+        </div>
+      </div>
+
+      <p id="statusMsg" class="status-msg">拖动老虎，从入口出发。颜色相通的路才能走，别被近路迷惑。</p>
+      <p id="progressMsg" class="progress-msg">已完成 0/2</p>
+
+      <div class="controls">
+        <button class="btn" id="resetBtn">重新开始</button>
+      </div>
+    </aside>
+
+    <section class="game-container">
+      <div class="maze-stage" id="mazeStage">
+        <div class="mesh-bg" aria-hidden="true"></div>
+
+        <svg class="path-layer" id="pathLayer" viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true">
+          <path class="zone-shape" id="zoneShape"></path>
+          <path id="pathBack"></path>
+          <path id="pathMainGlow"></path>
+          <path id="pathMain"></path>
+          <path id="pathMainInner"></path>
+          <path id="pathMainDetail"></path>
+          <path id="pathBranchGlow"></path>
+          <path id="pathBranch"></path>
+          <path id="pathBranchInner"></path>
+        </svg>
+
+
+        <div class="flag start" id="startNode"><span>入口</span></div>
+        <div class="target meat" id="meatIcon" aria-label="肉">
+          <img src="./img/5d5b6123d5c755f581c4cb97557e60c0.png" alt="肉">
+        </div>
+        <div class="flag exit" id="exitFlag"><span>出口</span></div>
+
+        <div class="badge b1"><img src="./img/5eb1c9c3d4544dfcae3f5d505cfe932b.png" alt=""></div>
+        <div class="badge b3"><img src="./img/0f4d5824037139a296885596ad788ef9.png" alt="利"></div>
+        <div class="badge b4"><img src="./img/d77e35d2cb741a6c4a87eb94028ecbdd.png" alt="益"></div>
+        <div class="badge b5"><img src="./img/0c673c7be1c539613f74925fe6e468ac.png" alt=""></div>
+        <div class="badge b6"><img src="./img/328efb9a4910a4a0f66512b2f10ef90a.png" alt="歧"></div>
+
+        <button id="tiger" class="tiger" type="button" aria-label="老虎">
+          <img src="./img/841f4caa2987e0c0f95382534be77781.png" alt="老虎">
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <div class="win-overlay" id="winOverlay">
+    <div class="win-modal">
+      <button class="win-close" id="winClose" aria-label="关闭">×</button>
+      <div class="win-emoji">🎉</div>
+      <h3 class="win-title">闯关成功！</h3>
+      <p class="win-subtitle">老虎先吃到肉，再顺利走出了迷宫。</p>
+      <button class="win-btn" id="playAgainBtn">再玩一次</button>
+    </div>
+  </div>
+
+  <script src="./game.js"></script>
+</body>
+</html>
