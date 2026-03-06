@@ -65,7 +65,8 @@
         margin-bottom: 10px;
     }
 
-    .seq-item svg { width: 30px; height: 30px; }
+    .seq-item svg,
+    .seq-item .icon-img { width: 30px; height: 30px; object-fit: contain; display: block; }
     .label { font-size: 13px; }
 
     .status-msg { font-size: 16px; min-height: 22px; }
@@ -139,7 +140,8 @@
         margin-bottom: 4px;
     }
 
-    .seq-item svg { width: 20px; height: 20px; }
+    .seq-item svg,
+    .seq-item .icon-img { width: 20px; height: 20px; object-fit: contain; display: block; }
     .seq-arrow { font-size: 13px; }
     .label { font-size: 10px; }
 
@@ -276,7 +278,8 @@ body {
 }
 
 .seq-item { text-align: center; }
-.seq-item svg { width: 28px; height: 28px; }
+.seq-item svg,
+.seq-item .icon-img { width: 28px; height: 28px; object-fit: contain; display: block; }
 .seq-arrow { font-size: 14px; font-weight: bold; color: #666; align-self: center; }
 .label { font-weight: bold; font-size: 11px; text-align: center; line-height: 1.2; }
 
@@ -310,7 +313,8 @@ body {
 }
 
 .tile:active { transform: scale(0.95); }
-.tile svg { width: 75%; height: 75%; pointer-events: none; }
+.tile svg,
+.tile .icon-img { width: 75%; height: 75%; object-fit: contain; pointer-events: none; display: block; }
 
 /* 背景色 */
 .bg-0 { background-color: #ffffff; }
@@ -576,7 +580,8 @@ body {
         margin-bottom: 10px !important;
     }
 
-    .seq-item svg { width: 30px !important; height: 30px !important; }
+    .seq-item svg,
+    .seq-item .icon-img { width: 30px !important; height: 30px !important; object-fit: contain; display: block; }
     .label { font-size: 13px !important; }
 
     .status-msg { font-size: 16px !important; min-height: 22px !important; }
@@ -647,7 +652,8 @@ body {
         margin-bottom: 4px !important;
     }
 
-    .seq-item svg { width: 20px !important; height: 20px !important; }
+    .seq-item svg,
+    .seq-item .icon-img { width: 20px !important; height: 20px !important; object-fit: contain; display: block; }
     .seq-arrow { font-size: 13px !important; }
     .label { font-size: 10px !important; }
 

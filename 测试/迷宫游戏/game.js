@@ -1,8 +1,8 @@
 const icons = [
-    `<svg viewBox="0 0 100 100"><path d="M10,50 Q50,10 90,50 Q50,90 10,50 M35,50 A15,15 0 1,1 65,50 A15,15 0 1,1 35,50" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>`,
-    `<svg viewBox="0 0 100 100"><path d="M15,40 Q50,5 85,40 Q50,75 15,40 M40,40 A10,10 0 1,1 60,40 A10,10 0 1,1 40,40" fill="none" stroke="currentColor" stroke-width="4"/><path d="M30,70 Q35,60 40,70 T50,70 T70,70" fill="none" stroke="currentColor" stroke-width="3"/><path d="M35,75 L35,85 M50,75 L50,90 M65,75 L65,85" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>`,
-    `<svg viewBox="0 0 100 100"><path d="M40,10 Q70,50 40,90 M60,10 Q30,50 60,90" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><circle cx="50" cy="45" r="8" fill="currentColor"/><path d="M45,70 Q50,85 55,70" fill="none" stroke="currentColor" stroke-width="4"/></svg>`,
-    `<svg viewBox="0 0 100 100"><path d="M20,60 Q50,30 80,60 Q50,90 20,60" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="50" cy="60" r="10" fill="none" stroke="currentColor" stroke-width="3"/><path d="M35,25 L30,15 M50,20 L50,10 M65,25 L70,15" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>`
+    '<img class="icon-img" src="./img/mian.png" alt="面">',
+    '<img class="icon-img" src="./img/lei.png" alt="泪">',
+    '<img class="icon-img" src="./img/jian.png" alt="见">',
+    '<img class="icon-img" src="./img/mei.png" alt="眉">'
 ];
 
 const names = ["面", "泪", "见", "眉"];
