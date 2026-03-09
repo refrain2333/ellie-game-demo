@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#ece9e4">
+  <title>甲骨文连线游戏</title>
+  <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+  <button
+    class="rules-btn"
+    id="toggleRules"
+    type="button"
+    aria-label="查看游戏规则"
+    aria-controls="rulesPanel"
+    aria-expanded="false"
+  >?</button>
+
+  <aside class="rules-panel" id="rulesPanel" aria-hidden="true">
+    <h3>游戏规则</h3>
+    <ul>
+      <li data-num="1">顶部是目标字卡，请按住字卡向下拖动。</li>
+      <li data-num="2">将字卡拖到圆圈里对应的甲骨文符号上，松手完成连线。</li>
+      <li data-num="3">拖动过程中会显示你的连线路径，每个甲骨文只能连接一次。</li>
+      <li data-num="4">所有甲骨文都连对后即可通关。</li>
+    </ul>
+  </aside>
+
+  <main class="page">
+    <section class="left-panel" aria-label="游戏信息面板">
+      <header class="header">
+        <h1>甲骨文连线</h1>
+        <p class="subtitle">从顶部字卡拖到圆圈里对应的甲骨文吧</p>
+      </header>
+
+      <div class="info-card">
+        <div id="progressMsg" class="progress-msg">已完成 0 / 5 个连接</div>
+        <div id="statusMsg" class="status-msg" aria-live="polite">按住顶部字卡，拖到对应的甲骨文符号上。</div>
+      </div>
+
+      <div class="controls">
+        <button class="btn reset-btn" id="resetBtn" type="button">重置挑战</button>
+      </div>
+    </section>
+
+    <div class="test-spacer" aria-hidden="true"></div>
+
+    <section class="game-container" aria-label="甲骨文配对游戏区">
+      <div class="game-area">
+        <div class="target-chars" id="targetChars" aria-label="顶部目标字卡"></div>
+        <svg class="line-canvas" id="lineCanvas" aria-hidden="true"></svg>
+        <svg class="drag-canvas" id="dragCanvas" aria-hidden="true"></svg>
+        <div class="circle-area" id="circleArea">
+          <div class="oracle-items" id="oracleItems" aria-label="甲骨文区域"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="win-overlay" id="winOverlay" aria-hidden="true">
+    <div class="win-modal" role="dialog" aria-modal="true" aria-labelledby="winTitle">
+      <button class="win-close" id="winCloseBtn" type="button" aria-label="关闭胜利弹窗">×</button>
+      <div class="win-emoji" aria-hidden="true">🎉</div>
+      <div class="win-title" id="winTitle">恭喜你！</div>
+      <div class="win-subtitle">成功完成甲骨文配对</div>
+      <button class="win-btn" id="playAgainBtn" type="button">再玩一次</button>
+    </div>
+  </div>
+
+  <script src="./game.js"></script>
+</body>
+</html>

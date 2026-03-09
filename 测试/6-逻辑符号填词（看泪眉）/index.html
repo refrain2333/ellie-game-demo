@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#ece9e4">
+  <title>逻辑符号填词：看泪眉</title>
+  <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+  <button
+    class="rules-btn"
+    id="toggleRules"
+    type="button"
+    aria-label="查看游戏规则"
+    aria-controls="rulesPanel"
+    aria-expanded="false"
+  >?</button>
+
+  <aside class="rules-panel" id="rulesPanel" aria-hidden="true">
+    <h3>游戏规则</h3>
+    <ul>
+      <li data-num="1">棋盘是 3×3，每个圆圈里只能放一种眼睛符号。</li>
+      <li data-num="2">点击空白圆圈，可在“看 → 泪 → 眉 → 清空”之间切换。</li>
+      <li data-num="3">每一横排、每一竖排都必须刚好出现一个“看”、一个“泪”、一个“眉”。</li>
+      <li data-num="4">所有空位填对后即可通关。</li>
+    </ul>
+  </aside>
+
+  <main class="page">
+    <section class="left-panel" aria-label="游戏信息面板">
+      <header class="header">
+        <h1>看泪眉</h1>
+        <p class="subtitle">每行每列各有一个“看、泪、眉”</p>
+      </header>
+
+      <div class="symbol-legend" id="legend" aria-label="符号图例"></div>
+
+      <div class="info-card">
+        <div id="progressMsg" class="progress-msg">已填写 0 / 3 个空位</div>
+        <div id="statusMsg" class="status-msg" aria-live="polite">点击空白圆圈开始填词。</div>
+      </div>
+
+      <div class="controls">
+        <button class="btn reset-btn" id="resetBtn" type="button">重置挑战</button>
+      </div>
+    </section>
+
+    <div class="test-spacer" aria-hidden="true"></div>
+
+    <section class="game-container" aria-label="游戏棋盘">
+      <div class="board-wrapper">
+        <div id="puzzleGrid" class="game-grid" role="grid" aria-label="3×3 逻辑填词棋盘"></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="win-overlay" id="winOverlay" aria-hidden="true">
+    <div class="win-modal" role="dialog" aria-modal="true" aria-labelledby="winTitle">
+      <button class="win-close" id="winCloseBtn" type="button" aria-label="关闭胜利弹窗">×</button>
+      <div class="win-emoji" aria-hidden="true">🎉</div>
+      <div class="win-title" id="winTitle">恭喜你！</div>
+      <div class="win-subtitle">解开了谜题</div>
+      <button class="win-btn" id="playAgainBtn" type="button">再玩一次</button>
+    </div>
+  </div>
+
+  <script src="./game.js"></script>
+</body>
+</html>
